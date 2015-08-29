@@ -19,25 +19,13 @@ class SettingsServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		$this->setupConfig();
-	}
+		$this->publishes([
+			__DIR__ .'/../config/config.php' => config_path('settings.php')
+		], 'config');
 
-	/**
-	 * Setup the config.
-	 *
-	 * @return void
-	 */
-	protected function setupConfig()
-	{
-		$source = realpath(__DIR__.'/../config/config.php');
-
-		if ( class_exists('Illuminate\Foundation\Application', false) ) {
-			$this->publishes([
-				$source => config_path('settings.php')
-			]);
-		}
-
-		$this->mergeConfigFrom($source, 'settings');
+		$this->publishes([
+			__DIR__ .'/../database/migrations/' => database_path('migrations')
+		], 'migrations');
 	}
 
 	/**
@@ -47,6 +35,11 @@ class SettingsServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
+		$this->mergeConfigFrom(
+			__DIR__ .'/../config/config.php',
+			'settings'
+		);
+
 		$this->app->singleton(SettingsManager::class, function ($app) {
 			return new SettingsManager($app);
 		});
