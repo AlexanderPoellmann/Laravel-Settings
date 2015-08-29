@@ -1,4 +1,4 @@
-<?php namespace AlexanderPoellmann\LaravelSettings;
+<?php namespace Driver;
 
 class SettingsUtilities
 {

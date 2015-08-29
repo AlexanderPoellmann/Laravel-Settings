@@ -1,13 +1,14 @@
-<?php namespace AlexanderPoellmann\LaravelSettings;
+<?php namespace vendocrat\Settings;
 
 use Illuminate\Support\ServiceProvider;
+use vendocrat\Settings\Driver\Driver;
 
 class SettingsServiceProvider extends ServiceProvider
 {
 	/**
-	 * This provider is deferred and should be lazy loaded.
+	 * Indicates if loading of the provider is deferred.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $defer = true;
 
@@ -46,19 +47,8 @@ class SettingsServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app->bindShared('AlexanderPoellmann\LaravelSettings\SettingsManager', function($app) {
-			// When the class has been resolved once, make sure that settings
-			// are saved when the application shuts down.
-			$app->shutdown(function($app) {
-				$app->make('AlexanderPoellmann\LaravelSettings\Driver\SettingsDriver')->save();
-			});
-
+		$this->app->singleton(SettingsManager::class, function ($app) {
 			return new SettingsManager($app);
-		});
-
-		// Provide a shortcut to the SettingStore for injecting into classes.
-		$this->app->bind('AlexanderPoellmann\LaravelSettings\Driver\SettingsDriver', function($app) {
-			return $app->make('AlexanderPoellmann\LaravelSettings\SettingsManager')->driver();
 		});
 	}
 
@@ -70,8 +60,8 @@ class SettingsServiceProvider extends ServiceProvider
 	public function provides()
 	{
 		return [
-			'AlexanderPoellmann\LaravelSettings\SettingsManager',
-			'AlexanderPoellmann\LaravelSettings\Driver\SettingsDriver',
+			SettingsManager::class,
+			Driver::class
 		];
 	}
 }

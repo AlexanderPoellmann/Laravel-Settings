@@ -1,6 +1,6 @@
 {
     "name": "vendocrat/laravel-settings",
-    "description": "Persistant settings for Laravel 5.",
+    "description": "Persistent, application-wide settings for Laravel 5.",
     "license": "MIT",
     "keywords": [
         "settings",
@@ -25,7 +25,7 @@
             "src/migrations"
         ],
         "psr-4": {
-            "AlexanderPoellmann\\LaravelSettings\\": "src/"
+            "vendocrat\\Settings\\": "src/"
         }
     },
     "extra": {

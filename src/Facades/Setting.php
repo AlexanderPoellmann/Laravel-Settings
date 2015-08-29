@@ -1,9 +1,10 @@
-<?php namespace AlexanderPoellmann\LaravelSettings;
+<?php namespace vendocrat\Settings\Facades;
 
+use vendocrat\Settings\SettingsManager;
 use Illuminate\Support\Facades\Facade;
 
-class SettingsFacade extends Facade {
-
+class Setting extends Facade
+{
 	/**
 	 * Get the registered name of the component.
 	 *
@@ -11,7 +12,6 @@ class SettingsFacade extends Facade {
 	 */
 	protected static function getFacadeAccessor()
 	{
-		return 'settings';
+		return SettingsManager::class;
 	}
-
 }

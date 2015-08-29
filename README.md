@@ -1,40 +1,48 @@
-[![Latest Stable Version](https://poser.pugx.org/AlexanderPoellmann/laravel-settings/v/stable.svg)](https://packagist.org/packages/AlexanderPoellmann/laravel-settings)
-[![Total Downloads](https://poser.pugx.org/AlexanderPoellmann/laravel-settings/downloads.svg)](https://packagist.org/packages/AlexanderPoellmann/laravel-settings)
-[![License](https://poser.pugx.org/AlexanderPoellmann/laravel-settings/license.svg)](https://packagist.org/packages/AlexanderPoellmann/laravel-settings)
+[![Latest Stable Version](https://poser.pugx.org/vendocrat/laravel-settings/v/stable)](https://packagist.org/packages/vendocrat/laravel-settings)
+[![Total Downloads](https://poser.pugx.org/vendocrat/laravel-settings/downloads)](https://packagist.org/packages/vendocrat/laravel-settings)
+[![License](https://poser.pugx.org/vendocrat/laravel-settings/license)](https://packagist.org/packages/vendocrat/laravel-settings)
 
 # Laravel Settings
 
-Persistant, application-wide settings for Laravel 5.
+Persistent, application-wide settings for Laravel 5.
 
 ## Installation
 
 1. Require the package from your `composer.json` file
 
-	"require": {
-		"AlexanderPoellmann/laravel-settings": "dev-master"
-	}
+```php
+"require": {
+	"vendocrat/laravel-settings": "dev-master"
+}
+```
 
 2. Run update
 
-    composer update
+```
+composer update
+```
 
 3. Register service provider and facade to your `config/app.php` file
 
 ```php
-'AlexanderPoellmann\LaravelSettings\SettingsServiceProvider',
+'vendocrat\Settings\SettingsServiceProvider',
 
-'Settings' => 'AlexanderPoellmann\LaravelSettings\Facades\SettingsFacade',
+'Settings' => 'vendocrat\Settings\Facades\Setting',
 ```
 
 ### Storage
 
 4. Publish config file and migrations
 
-	php artisan vendor:publish
+```
+php artisan vendor:publish
+```
 
 5. Migrate
 
-	php artisan migrate
+```
+php artisan migrate
+```
 
 ## Usage
 
@@ -55,6 +63,6 @@ Licensed under [MIT license](http://opensource.org/licenses/MIT).
 
 ## Author
 
-**Handcrafted with love by [Alexander Manfred Poellmann](http://twitter.com/AMPoellmann) in Vienna &amp; Rome.**
+**Handcrafted with love by [Alexander Manfred Poellmann](http://twitter.com/AMPoellmann) for [vendocrat](https://vendocr.at) in Vienna &amp; Rome.**
 
-Based on [Laravel Settings](https://github.com/anlutro/laravel-settings) by [Andreas Lutro](http://www.lutro.me).
+Based on the awesome package [Laravel Settings](https://github.com/anlutro/laravel-settings) by [Andreas Lutro](http://www.lutro.me).

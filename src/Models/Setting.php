@@ -1,4 +1,4 @@
-<?php namespace AlexanderPoellmann\LaravelSettings;
+<?php namespace vendocrat\Settings\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

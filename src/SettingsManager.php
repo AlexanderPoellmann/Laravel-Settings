@@ -1,8 +1,8 @@
-<?php namespace AlexanderPoellmann\LaravelSettings;
+<?php namespace vendocrat\Settings;
 
-use AlexanderPoellmann\LaravelSettings\Driver\SettingsDriverDatabase;
-use AlexanderPoellmann\LaravelSettings\Driver\SettingsDriverJson;
-use AlexanderPoellmann\LaravelSettings\Driver\SettingsDriverMemory;
+use vendocrat\Settings\Driver\DatabaseDriver;
+use vendocrat\Settings\Driver\JsonDriver;
+use vendocrat\Settings\Driver\MemoryDriver;
 
 use Illuminate\Support\Manager;
 
@@ -13,7 +13,7 @@ class SettingsManager extends Manager
 	{
 		$path = $this->getConfig('path');
 
-		return new SettingsDriverJson($this->app['files'], $path);
+		return new JsonDriver($this->app['files'], $path);
 	}
 
 	public function createDatabaseDriver()
@@ -21,12 +21,12 @@ class SettingsManager extends Manager
 		$connection = $this->app['db']->connection();
 		$table = $this->getConfig('table');
 
-		return new SettingsDriverDatabase($connection, $table);
+		return new DatabaseDriver($connection, $table);
 	}
 
 	public function createMemoryDriver()
 	{
-		return new SettingsDriverMemory();
+		return new MemoryDriver();
 	}
 
 	public function createArrayDriver()

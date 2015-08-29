@@ -1,9 +1,9 @@
-<?php namespace AlexanderPoellmann\LaravelSettings\Driver;
+<?php namespace vendocrat\Settings\Driver;
 
-use AlexanderPoellmann\LaravelSettings\SettingsUtilities;
+use vendocrat\Settings\SettingsUtilities;
 use Illuminate\Database\Connection;
 
-class SettingsDriverDatabase extends SettingsDriver
+class DatabaseDriver extends Driver
 {
 	/**
 	 * The database connection instance.
@@ -37,10 +37,10 @@ class SettingsDriverDatabase extends SettingsDriver
 	 * @param \Illuminate\Database\Connection $connection
 	 * @param string                          $table
 	 */
-	public function __construct(Connection $connection, $table = null)
+	public function __construct( Connection $connection, $table = null )
 	{
 		$this->connection = $connection;
-		$this->table = $table ?: 'persistant_settings';
+		$this->table = $table ?: 'settings';
 	}
 
 	/**
@@ -48,7 +48,7 @@ class SettingsDriverDatabase extends SettingsDriver
 	 *
 	 * @param string $table
 	 */
-	public function setTable($table)
+	public function setTable( $table )
 	{
 		$this->table = $table;
 	}
@@ -58,10 +58,10 @@ class SettingsDriverDatabase extends SettingsDriver
 	 *
 	 * @param \Closure $callback
 	 */
-	public function setConstraint(\Closure $callback)
+	public function setConstraint( \Closure $callback )
 	{
-		$this->data = array();
-		$this->loaded = false;
+		$this->storage  = array();
+		$this->modified = false;
 		$this->queryConstraint = $callback;
 	}
 
@@ -70,7 +70,7 @@ class SettingsDriverDatabase extends SettingsDriver
 	 *
 	 * @param array $columns
 	 */
-	public function setExtraColumns(array $columns)
+	public function setExtraColumns( array $columns )
 	{
 		$this->extraColumns = $columns;
 	}
