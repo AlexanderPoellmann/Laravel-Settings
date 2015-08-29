@@ -1,6 +1,7 @@
 {
     "name": "vendocrat/laravel-settings",
     "description": "Persistent, application-wide settings for Laravel 5.",
+    "homepage" : "https://github.com/vendocrat/laravel-settings",
     "license": "MIT",
     "keywords": [
         "settings",
@@ -8,26 +9,32 @@
     ],
     "authors": [
         {
-            "name": "Alexander Manfred Poellmann"
+            "name"     : "Alexander Manfred Poellmann",
+            "homepage" : "http://twitter.com/AMPoellmann",
+            "role"     : "developer"
         }
     ],
     "require": {
-        "php"                : ">=5.5.9",
-        "illuminate/support" : ">=5.1"
-    },
-    "require-dev": {
-        "mockery/mockery"       : "0.9.*",
+        "php"                   : ">=5.5.9",
+        "illuminate/support"    : ">=5.1",
         "illuminate/database"   : ">=5.1",
         "illuminate/filesystem" : ">=5.1"
     },
+    "require-dev": {
+        "mockery/mockery" : "0.9.*"
+    },
     "autoload": {
         "psr-4": {
-            "vendocrat\\Settings\\": "src/"
+            "vendocrat\\Settings\\" : "src/"
         }
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "0.0.x-dev"
+        "branch-alias" : {
+            "dev-master" : "0.0.x-dev"
         }
+    },
+    "support" : {
+        "source" : "https://github.com/AlexanderPoellmann/laravel-settings",
+        "issues" : "https://github.com/AlexanderPoellmann/laravel-settings/issues"
     }
 }
