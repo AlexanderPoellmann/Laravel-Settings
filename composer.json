@@ -1,5 +1,5 @@
 {
-    "name": "alexander-poellmann/laravel-settings",
+    "name": "vendocrat/laravel-settings",
     "description": "Persistant settings for Laravel 5.",
     "license": "MIT",
     "keywords": [
