@@ -21,9 +21,6 @@
         "illuminate/filesystem" : ">=5.1"
     },
     "autoload": {
-        "classmap": [
-            "database/migrations"
-        ],
         "psr-4": {
             "vendocrat\\Settings\\": "src/"
         }
