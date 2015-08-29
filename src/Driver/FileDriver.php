@@ -58,7 +58,7 @@ abstract class FileDriver extends Driver
 	{
 		$contents = $this->files->get($this->path);
 
-		$storage = json_decode(json_encode($contents, true));
+		$storage = json_decode($contents, true);
 
 		if ( $storage === null ) {
 			throw new \RuntimeException("Invalid JSON in {$this->path}");

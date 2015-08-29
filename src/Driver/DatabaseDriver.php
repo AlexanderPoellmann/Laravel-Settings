@@ -1,5 +1,6 @@
 <?php namespace vendocrat\Settings\Driver;
 
+use vendocrat\Settings\Models\Setting;
 use vendocrat\Settings\SettingsUtilities;
 use Illuminate\Database\Connection;
 
@@ -54,28 +55,6 @@ class DatabaseDriver extends Driver
 	}
 
 	/**
-	 * Set the query constraint.
-	 *
-	 * @param \Closure $callback
-	 */
-	public function setConstraint( \Closure $callback )
-	{
-		$this->storage  = array();
-		$this->modified = false;
-		$this->queryConstraint = $callback;
-	}
-
-	/**
-	 * Set extra columns to be added to the rows.
-	 *
-	 * @param array $columns
-	 */
-	public function setExtraColumns( array $columns )
-	{
-		$this->extraColumns = $columns;
-	}
-
-	/**
 	 * {@inheritdoc}
 	 */
 	public function forget($key)
@@ -104,69 +83,51 @@ class DatabaseDriver extends Driver
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function write(array $data)
+	protected function write( array $storage )
 	{
-		$keys = $this->newQuery()
-			->lists('key');
+		$storage = array_dot($storage);
 
-		$insertData = array_dot($data);
-		$updateData = array();
-		$deleteKeys = array();
+		$update = array(); // key-value pairs to be updated later
+		$delete = array(); // key-value pairs to be deleted later
 
-		foreach ($keys as $key) {
-			if (isset($insertData[$key])) {
-				$updateData[$key] = $insertData[$key];
+		$keys = Setting::withTrashed()->lists('key'); // existing keys
+
+		// check what keys we have to update/create and which to delete
+		foreach ( $keys as $key ) {
+			if ( isset($storage[$key]) ) {
+				$update[$key] = $storage[$key];
 			} else {
-				$deleteKeys[] = $key;
+				$delete[] = $key;
 			}
-			unset($insertData[$key]);
+
+			unset($storage[$key]);
 		}
 
-		foreach ($updateData as $key => $value) {
-			$this->newQuery()
-				->where('key', '=', $key)
-				->update(array('value' => $value));
-		}
+		// $update now keeps only those key-value pairs which are to be updated
+		foreach ( $update as $key => $value ) {
+			Setting::withTrashed()
+				->where( 'key', $key )
+				->update(['value' => $value]);
 
-		if ($insertData) {
-			$this->newQuery(true)
-				->insert($this->prepareInsertData($insertData));
-		}
+			$setting = Setting::withTrashed()
+				->where( 'key', $key )
+				->first();
 
-		if ($deleteKeys) {
-			$this->newQuery()
-				->whereIn('key', $deleteKeys)
-				->delete();
-		}
-	}
-
-	/**
-	 * Transforms settings data into an array ready to be insterted into the
-	 * database. Call array_dot on a multidimensional array before passing it
-	 * into this method!
-	 *
-	 * @param  array $data Call array_dot on a multidimensional array before passing it into this method!
-	 *
-	 * @return array
-	 */
-	protected function prepareInsertData(array $data)
-	{
-		$dbData = array();
-
-		if ($this->extraColumns) {
-			foreach ($data as $key => $value) {
-				$dbData[] = array_merge(
-					$this->extraColumns,
-					array('key' => $key, 'value' => $value)
-				);
-			}
-		} else {
-			foreach ($data as $key => $value) {
-				$dbData[] = array('key' => $key, 'value' => $value);
+			if ( $setting->trashed() ) {
+				$setting->restore();
 			}
 		}
 
-		return $dbData;
+		// $storage now keeps only those key-value pairs which are to be created
+		foreach ( $storage as $key => $value ) {
+			Setting::create([
+				'key'   => $key,
+				'value' => $value
+			]);
+		}
+
+		// $delete now keeps only those key-value pairs which are to be deleted
+		Setting::whereIn( 'key', $delete )->delete();
 	}
 
 	/**
@@ -174,7 +135,7 @@ class DatabaseDriver extends Driver
 	 */
 	protected function read()
 	{
-		return $this->parseReadData($this->newQuery()->get());
+		return $this->parseReadData(Setting::get());
 	}
 
 	/**
@@ -204,33 +165,5 @@ class DatabaseDriver extends Driver
 		}
 
 		return $results;
-	}
-
-	/**
-	 * Create a new query builder instance.
-	 *
-	 * @param  $insert  boolean  Whether the query is an insert or not.
-	 *
-	 * @return \Illuminate\Database\Query\Builder
-	 */
-	protected function newQuery($insert = false)
-	{
-		$query = $this->connection->table($this->table);
-
-		if (!$insert) {
-			foreach ($this->extraColumns as $key => $value) {
-				$query->where($key, '=', $value);
-			}
-		}
-
-		if ($this->queryConstraint !== null) {
-			$callback = $this->queryConstraint;
-
-			if ( isset($callback) ) {
-				$callback($query, $insert);
-			}
-		}
-
-		return $query;
 	}
 }

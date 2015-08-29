@@ -5,35 +5,35 @@ class SettingsUtilities
 	/**
 	 * Get an element from an array.
 	 *
-	 * @param  array  $data
+	 * @param  array  $storage
 	 * @param  string $key     Specify a nested element by separating keys with full stops.
 	 * @param  mixed  $default If the element is not found, return this.
 	 *
 	 * @return mixed
 	 */
-	public static function get( array $data, $key, $default = null )
+	public static function get( array $storage, $key, $default = null )
 	{
 		if ($key === null) {
-			return $data;
+			return $storage;
 		}
 
 		if (is_array($key)) {
-			return static::getArray($data, $key, $default);
+			return static::getArray($storage, $key, $default);
 		}
 
 		foreach (explode('.', $key) as $segment) {
-			if (!is_array($data)) {
+			if (!is_array($storage)) {
 				return $default;
 			}
 
-			if (!array_key_exists($segment, $data)) {
+			if (!array_key_exists($segment, $storage)) {
 				return $default;
 			}
 
-			$data = $data[$segment];
+			$storage = $storage[$segment];
 		}
 
-		return $data;
+		return $storage;
 	}
 
 	protected static function getArray(array $input, $keys, $default = null)
@@ -50,23 +50,23 @@ class SettingsUtilities
 	/**
 	 * Determine if an array has a given key.
 	 *
-	 * @param  array   $data
+	 * @param  array   $storage
 	 * @param  string  $key
 	 *
 	 * @return boolean
 	 */
-	public static function has(array $data, $key)
+	public static function has(array $storage, $key)
 	{
 		foreach (explode('.', $key) as $segment) {
-			if (!is_array($data)) {
+			if (!is_array($storage)) {
 				return false;
 			}
 
-			if (!array_key_exists($segment, $data)) {
+			if (!array_key_exists($segment, $storage)) {
 				return false;
 			}
 
-			$data = $data[$segment];
+			$storage = $storage[$segment];
 		}
 
 		return true;
@@ -75,11 +75,11 @@ class SettingsUtilities
 	/**
 	 * Set an element of an array.
 	 *
-	 * @param array  $data
+	 * @param array  $storage
 	 * @param string $key   Specify a nested element by separating keys with full stops.
 	 * @param mixed  $value
 	 */
-	public static function set(array &$data, $key, $value)
+	public static function set( array &$storage, $key, $value )
 	{
 		$segments = explode('.', $key);
 
@@ -87,25 +87,25 @@ class SettingsUtilities
 
 		// iterate through all of $segments except the last one
 		foreach ($segments as $segment) {
-			if (!array_key_exists($segment, $data)) {
-				$data[$segment] = array();
-			} else if (!is_array($data[$segment])) {
+			if (!array_key_exists($segment, $storage)) {
+				$storage[$segment] = array();
+			} else if (!is_array($storage[$segment])) {
 				throw new \UnexpectedValueException('Non-array segment encountered');
 			}
 
-			$data =& $data[$segment];
+			$storage =& $storage[$segment];
 		}
 
-		$data[$key] = $value;
+		$storage[$key] = $value;
 	}
 
 	/**
 	 * Unset an element from an array.
 	 *
-	 * @param  array  &$data
+	 * @param  array  &$storage
 	 * @param  string $key   Specify a nested element by separating keys with full stops.
 	 */
-	public static function forget(array &$data, $key)
+	public static function forget( array &$storage, $key )
 	{
 		$segments = explode('.', $key);
 
@@ -113,15 +113,15 @@ class SettingsUtilities
 
 		// iterate through all of $segments except the last one
 		foreach ($segments as $segment) {
-			if (!array_key_exists($segment, $data)) {
+			if (!array_key_exists($segment, $storage)) {
 				return;
-			} else if (!is_array($data[$segment])) {
+			} else if (!is_array($storage[$segment])) {
 				throw new \UnexpectedValueException('Non-array segment encountered');
 			}
 
-			$data =& $data[$segment];
+			$storage =& $storage[$segment];
 		}
 
-		unset($data[$key]);
+		unset($storage[$key]);
 	}
 }

@@ -45,7 +45,9 @@ $ php artisan vendor:publish --provider="vendocrat\Settings\SettingsServiceProvi
 
 This will create a `config/settings.php` file where you can set for example which driver you want to use (JSON file, database, ...).
 
-## Migration _(only when using database driver)_
+## Migration
+
+Note: You'll only need to complete this step when using the database driver.
 
 If you want to store your settings in your database, you'll have to set `'driver'` in your `config/settings.php` file to `'database'` and publish the migration like so:
 
@@ -63,33 +65,72 @@ $ php artisan migrate
 
 ##### Get all settings
 ```php
-$settings = Setting::all();
+$settings = \Setting::all();
 ```
 
 ##### Check if a setting exists
 ```php
-Setting::has($key);
+\Setting::has($key);
 ```
 
 ##### Get a setting
 ```php
-$setting = Setting::get($key);
+$setting = \Setting::get($key);
 ```
 
 ##### Add/update a setting
 ```php
-Setting::set($key, $value);
+\Setting::set($key, $value);
 ```
 
 ##### Delete a setting
 ```php
-Setting::forget($key);
+\Setting::forget($key);
 ```
 
 ##### Delete all settings
 ```php
-Setting::flush();
+\Setting::flush();
 ```
+
+##### Save your updates (set, forget, flush)
+```php
+\Setting::save();
+```
+
+## Example
+
+The following example would store the setting `'bar'` with the key `'foo'`, then update it to `'bars'`, save it and then die & dump all current settings, which is only one unique `'foo'` key-value pair.
+
+```php
+\Setting::set('foo', 'bar');
+\Setting::set('foo', 'bars');
+
+\Setting::save();
+
+dd(\Setting::all());
+```
+
+Results in
+
+```html
+array [
+  "foo" => "bars"
+]
+```
+
+## My Edits
+
+* restructured folders & files
+* uses Eloquent models for database driver with soft deleting
+* add interface contract
+* removed middleware
+
+#### To-Dos
+
+* add Redis support
+* add option to group settings (e.g. config/user/...)
+* add logic to automatically render input forms in the frontend for settings (like a simple App Settings view or so)
 
 ## License
 

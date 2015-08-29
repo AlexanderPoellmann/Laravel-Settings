@@ -64,12 +64,7 @@ abstract class Driver implements DriverInterface
 	{
 		$this->checkLoaded();
 
-		if ( array_key_exists($key, $this->storage) ) {
-			return $this->storage[$key];
-		}
-
-		return null;
-	//	return SettingsUtilities::get($this->storage, $key, $default);
+		return SettingsUtilities::get($this->storage, $key, $default);
 	}
 
 	/**
@@ -86,12 +81,10 @@ abstract class Driver implements DriverInterface
 
 		if ( is_array($key) ) {
 			foreach ( $key as $k => $v ) {
-				$this->set($k, $v);
-			//	SettingsUtilities::set($this->data, $k, $v);
+				SettingsUtilities::set($this->storage, $k, $v);
 			}
 		} else {
-			$this->storage[$key] = $value;
-		//	SettingsUtilities::set($this->data, $key, $value);
+			SettingsUtilities::set($this->storage, $key, $value);
 		}
 	}
 
@@ -104,11 +97,11 @@ abstract class Driver implements DriverInterface
 	 */
 	public function forget($key)
 	{
+		$this->checkLoaded();
 		$this->modified = true;
 
 		if ( $this->has($key) ) {
-			unset($this->storage[$key]);
-		//	SettingsUtilities::forget($this->storage, $key);
+			SettingsUtilities::forget($this->storage, $key);
 		}
 
 		return true;
