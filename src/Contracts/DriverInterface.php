@@ -32,8 +32,9 @@ interface DriverInterface
 	 *
 	 * @param string $key
 	 * @param mixed  $value
+	 * @param string $group
 	 */
-	public function put($key, $value);
+	public function set($key, $value, $group = '');
 
 	/**
 	 * Forget setting

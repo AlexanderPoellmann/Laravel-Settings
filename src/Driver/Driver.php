@@ -68,6 +68,7 @@ abstract class Driver implements DriverInterface
 			return $this->storage[$key];
 		}
 
+		return null;
 	//	return SettingsUtilities::get($this->storage, $key, $default);
 	}
 
@@ -76,15 +77,16 @@ abstract class Driver implements DriverInterface
 	 *
 	 * @param string $key
 	 * @param mixed  $value
+	 * @param string $group
 	 */
-	public function put( $key, $value = null )
+	public function set( $key, $value = null, $group = '' )
 	{
 		$this->checkLoaded();
 		$this->modified = true;
 
 		if ( is_array($key) ) {
 			foreach ( $key as $k => $v ) {
-				$this->put($k, $v);
+				$this->set($k, $v);
 			//	SettingsUtilities::set($this->data, $k, $v);
 			}
 		} else {
@@ -140,8 +142,8 @@ abstract class Driver implements DriverInterface
 	protected function checkLoaded()
 	{
 		if ( ! $this->modified ) {
-			$this->storage  = $this->read();
 		//	$this->storage = json_decode(json_encode($this->read()), true);
+			$this->storage  = $this->read();
 			$this->modified = true;
 		}
 	}

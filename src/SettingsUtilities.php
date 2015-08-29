@@ -1,4 +1,4 @@
-<?php namespace Driver;
+<?php namespace vendocrat\Settings;
 
 class SettingsUtilities
 {

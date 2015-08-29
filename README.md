@@ -8,7 +8,7 @@ Persistent, application-wide settings for Laravel 5.
 
 ## Installation
 
-1. Require the package from your `composer.json` file
+Require the package from your `composer.json` file
 
 ```php
 "require": {
@@ -16,45 +16,79 @@ Persistent, application-wide settings for Laravel 5.
 }
 ```
 
-2. Run update
+and run `$ composer update` or both in one with `$ composer require vendocrat/laravel-settings`.
 
-```
-composer update
-```
-
-3. Register service provider and facade to your `config/app.php` file
+Next register the service provider and (optional) facade to your `config/app.php` file
 
 ```php
-'vendocrat\Settings\SettingsServiceProvider',
-
-'Settings' => 'vendocrat\Settings\Facades\Setting',
+'providers' => [
+    // Illuminate Providers ...
+    // App Providers ...
+    vendocrat\Settings\SettingsServiceProvider::class
+];
 ```
 
-### Storage
-
-4. Publish config file and migrations
-
+```php
+'providers' => [
+	// Illuminate Facades ...
+    'Setting' => vendocrat\Settings\Facades\Setting::class
+];
 ```
-php artisan vendor:publish
+
+## Configuration
+
+Laravel Settings includes an optional config file. Get started buy publishing it:
+
+```bash
+$ php artisan vendor:publish --provider="vendocrat\Settings\SettingsServiceProvider" --tag="config"
 ```
 
-5. Migrate
+This will create a `config/settings.php` file where you can set for example which driver you want to use (JSON file, database, ...).
 
+## Migration _(only when using database driver)_
+
+If you want to store your settings in your database, you'll have to set `'driver'` in your `config/settings.php` file to `'database'` and publish the migration like so:
+
+```bash
+$ php artisan vendor:publish --provider="vendocrat\Settings\SettingsServiceProvider" --tag="migrations"
 ```
-php artisan migrate
+
+Afterwards you'll have to run the artisan migrate command:
+
+```bash
+$ php artisan migrate
 ```
 
 ## Usage
 
+##### Get all settings
 ```php
-<?php
-$settings = Setting::all();		// get all settings
+$settings = Setting::all();
+```
 
-Setting::set('foo', 'bar');		// set setting
-Setting::get('foo', 'default'); // get setting with default
-Setting::get('nested.setting'); // get a nestet setting
-Setting::forget('foo');			// forget a setting
-?>
+##### Check if a setting exists
+```php
+Setting::has($key);
+```
+
+##### Get a setting
+```php
+$setting = Setting::get($key);
+```
+
+##### Add/update a setting
+```php
+Setting::set($key, $value);
+```
+
+##### Delete a setting
+```php
+Setting::forget($key);
+```
+
+##### Delete all settings
+```php
+Setting::flush();
 ```
 
 ## License
@@ -65,4 +99,4 @@ Licensed under [MIT license](http://opensource.org/licenses/MIT).
 
 **Handcrafted with love by [Alexander Manfred Poellmann](http://twitter.com/AMPoellmann) for [vendocrat](https://vendocr.at) in Vienna &amp; Rome.**
 
-Based on the awesome package [Laravel Settings](https://github.com/anlutro/laravel-settings) by [Andreas Lutro](http://www.lutro.me).
+Based on [Laravel Settings](https://github.com/anlutro/laravel-settings) by [Andreas Lutro](http://www.lutro.me).
