@@ -1,0 +1,36 @@
+{
+    "name": "AlexanderPoellmann/laravel-settings",
+    "description": "Persistant settings for Laravel 5.",
+    "license": "MIT",
+    "keywords": [
+        "settings",
+        "laravel"
+    ],
+    "authors": [
+        {
+            "name": "Alexander Manfred Poellmann"
+        }
+    ],
+    "require": {
+        "php"                : ">=5.5.9",
+        "illuminate/support" : ">=5.1"
+    },
+    "require-dev": {
+        "mockery/mockery"       : "0.9.*",
+        "illuminate/database"   : ">=5.1",
+        "illuminate/filesystem" : ">=5.1"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-4": {
+            "AlexanderPoellmann\\LaravelSettings\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0.x-dev"
+        }
+    }
+}
