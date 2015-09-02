@@ -1,6 +1,6 @@
 <?php namespace vendocrat\Settings\Exceptions;
 
-class NotWriteableException extends \RuntimeException
+class NotWritableException extends \RuntimeException
 {
     //
 }

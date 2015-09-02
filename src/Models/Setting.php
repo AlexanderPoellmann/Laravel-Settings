@@ -12,7 +12,7 @@ class Setting extends Model
 	 *
 	 * @var string
 	 */
-	protected $table = 'settings';
+	protected $table;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -38,4 +38,16 @@ class Setting extends Model
 	 * @var array
 	 */
 	protected $dates = ['deleted_at'];
+
+	/**
+	 * Create a new Eloquent model instance.
+	 *
+	 * @param  array  $attributes
+	 */
+	public function __construct(array $attributes = [])
+	{
+		$this->table = config('settings.table');
+
+		parent::__construct($attributes);
+	}
 }

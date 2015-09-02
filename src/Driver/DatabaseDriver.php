@@ -7,6 +7,7 @@ use Illuminate\Database\Connection;
 class DatabaseDriver extends Driver
 {
 	/**
+	 * @deprecated
 	 * The database connection instance.
 	 *
 	 * @var \Illuminate\Database\Connection
@@ -14,6 +15,7 @@ class DatabaseDriver extends Driver
 	protected $connection;
 
 	/**
+	 * @deprecated
 	 * The table to query from.
 	 *
 	 * @var string
@@ -21,6 +23,7 @@ class DatabaseDriver extends Driver
 	protected $table;
 
 	/**
+	 * @deprecated
 	 * Any query constraints that should be applied.
 	 *
 	 * @var \Closure|null
@@ -28,6 +31,7 @@ class DatabaseDriver extends Driver
 	protected $queryConstraint;
 
 	/**
+	 * @deprecated
 	 * Any extra columns that should be added to the rows.
 	 *
 	 * @var array
@@ -40,6 +44,9 @@ class DatabaseDriver extends Driver
 	 */
 	public function __construct( Connection $connection, $table = null )
 	{
+		/*
+		 * TODO all this seems to be unnecessary as we're using Eloquent models
+		 */
 		$this->connection = $connection;
 		$this->table = $table ?: 'settings';
 	}

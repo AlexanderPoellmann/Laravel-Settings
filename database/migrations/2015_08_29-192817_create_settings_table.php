@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSettingsTable extends Migration
+class SettingsTable extends Migration
 {
     /**
      * Table name
@@ -44,7 +44,7 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::drop($this->tablename);
+        Schema::drop($this->table);
     }
 }
 

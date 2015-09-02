@@ -1,6 +1,6 @@
 <?php namespace vendocrat\Settings\Driver;
 
-use vendocrat\Settings\Exceptions\NotWriteableException;
+use vendocrat\Settings\Exceptions\NotWritableException;
 use Illuminate\Filesystem\Filesystem;
 
 abstract class FileDriver extends Driver
@@ -33,19 +33,19 @@ abstract class FileDriver extends Driver
 	 * Set the path for the JSON file.
 	 *
 	 * @param string $path
-	 * @throws NotWriteableException
+	 * @throws NotWritableException
 	 */
 	public function setPath($path)
 	{
 		if ( ! $this->files->exists($path) ) {
 			$result = $this->files->put($path, '{}');
 			if ( $result === false ) {
-				throw new NotWriteableException("Could not write to $path.");
+				throw new NotWritableException("Could not write to $path.");
 			}
 		}
 
 		if ( ! $this->files->isWritable($path) ) {
-			throw new NotWriteableException("$path is not writable.");
+			throw new NotWritableException("$path is not writable.");
 		}
 
 		$this->path = $path;
