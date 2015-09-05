@@ -5,6 +5,7 @@
     "license": "MIT",
     "keywords": [
         "settings",
+        "options",
         "laravel"
     ],
     "authors": [
